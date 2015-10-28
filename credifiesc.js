@@ -4,15 +4,12 @@ Use this at your own risk!
 */
 
 (function() {
-  var EXPECT_URL = 'https://web.sipag.com.br/sipagportador/wrk/site/index.jsf';
   var EXPECT_TITLE = 'Movimentos não faturados';
 
   var titleElement = document.getElementById('titlePhase');
 
-  if(location.href != EXPECT_URL || titleElement.innerText != EXPECT_TITLE) {
+  if(!titleElement || titleElement.innerText != EXPECT_TITLE) {
     console.log("Bookmarklet won't load: Not on Credifiesc page");
-    console.log("Current Location: ", location.href);
-    console.log("Expected Location: ", EXPECT_URL);
     console.log("Current page title: ", titleElement.innerText);
     console.log("Expected page title: ", EXPECT_TITLE);
     return;
