@@ -4,7 +4,7 @@ Use this at your own risk!
 */
 
 (function() {
-  var EXPECT_TITLE = 'Movimentos não faturados';
+  var EXPECT_TITLE = 'Movimentos nï¿½o faturados';
 
   var titleElement = document.getElementById('titlePhase');
 
@@ -36,7 +36,7 @@ Use this at your own risk!
     if(payee.match(/ - \d+\/\d+$/)) { return; } // Skip split pmts
 
     var memo = columns[2].innerText;
-    var value = columns[4].innerText.replace('.', '').replace(',','.');
+    var value = columns[4].innerText.replace('.', ',').replace(',','');
 
     csvContent += date + "," + payee + ",," + memo + ",";
 
@@ -56,9 +56,9 @@ Use this at your own risk!
     var date = columns[0].innerText;
     var payee = columns[1].innerText;
     var memo = columns[2].innerText;
-    var value = columns[3].innerText.replace('.', '').replace(',','.');
+    var value = columns[3].innerText.replace(',', '').replace('.',',');
 
-    csvContent += date + "," + payee + ",," + memo + "," + value + ",\n";
+    csvContent += "'" + date + "','" + payee + "','','" + memo + "','" + value + "',''\n";
   });
 
   // Date,Payee,Category,Memo,Outflow,Inflow
