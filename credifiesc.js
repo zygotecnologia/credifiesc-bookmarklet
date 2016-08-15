@@ -4,16 +4,16 @@ Use this at your own risk!
 */
 
 (function() {
-  var EXPECT_TITLE = 'Movimentos n�o faturados';
+  // var EXPECT_TITLE = 'Movimentos n�o faturados';
 
-  var titleElement = document.getElementById('titlePhase');
+  // var titleElement = document.getElementById('titlePhase');
 
-  if(!titleElement || titleElement.innerText != EXPECT_TITLE) {
-    console.log("Bookmarklet won't load: Not on Credifiesc page");
-    console.log("Current page title: ", titleElement.innerText);
-    console.log("Expected page title: ", EXPECT_TITLE);
-    return;
-  }
+  // if(!titleElement || titleElement.innerText != EXPECT_TITLE) {
+  //   console.log("Bookmarklet won't load: Not on Credifiesc page");
+  //   console.log("Current page title: ", titleElement.innerText);
+  //   console.log("Expected page title: ", EXPECT_TITLE);
+  //   return;
+  // }
 
   var tables = document.getElementsByClassName('dadosCartaoTitular');
   var confirmedTable = tables[1].getElementsByTagName('tbody')[0];
@@ -22,7 +22,7 @@ Use this at your own risk!
   var lines = [].slice.call(confirmedTable.getElementsByTagName('tr'));
 
   var csvContent = "data:text/csv;charset=utf-8,";
-  csvContent += "Date,Payee,Category,Memo,Outflow,Inflow\n";
+  csvContent += "\"Date\",\"Payee\",\"Category\",\"Memo\",\"Outflow\",\"Inflow\"\n";
 
   lines.forEach(function(line, i) {
     var columns = line.getElementsByTagName('td');
@@ -36,15 +36,15 @@ Use this at your own risk!
     if(payee.match(/ - \d+\/\d+$/)) { return; } // Skip split pmts
 
     var memo = columns[2].innerText;
-    var value = columns[4].innerText.replace('.', ',').replace(',','');
+    var value = columns[4].innerText.replace('.', '').replace(',', '.');
 
-    csvContent += date + "," + payee + ",," + memo + ",";
+    csvContent += "\"" + date + "\",\"" + payee + "\",\"\",\"" + memo + "\",\"";
 
     if(value.slice(0,1) == '-') {
       // Negative values are inflow
-      csvContent += "," + value.slice(1) + "\n";
+      csvContent += "\",\"" + value.slice(1) + "\"\n";
     } else {
-      csvContent += value + ",\n";
+      csvContent += "" + value + "\",\"\"\n";
     }
   });
 
@@ -56,9 +56,9 @@ Use this at your own risk!
     var date = columns[0].innerText;
     var payee = columns[1].innerText;
     var memo = columns[2].innerText;
-    var value = columns[3].innerText.replace(',', '').replace('.',',');
+    var value = columns[3].innerText.replace('.', '').replace(',', '.');
 
-    csvContent += "'" + date + "','" + payee + "','','" + memo + "','" + value + "',''\n";
+    csvContent += "\"" + date + "\",\"" + payee + "\",\"\",\"" + memo + "\",\"" + value + "\",\"\"\n";
   });
 
   // Date,Payee,Category,Memo,Outflow,Inflow
